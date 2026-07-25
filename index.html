@@ -581,15 +581,31 @@ let ubicacionesData = []; // guarda objeto completo {nombre, direccion, maps, in
 
 async function cargarUbicaciones() {
   try {
-    const res = await fetch(APPS_SCRIPT_URL + '?action=getUbicaciones');
-    const json = await res.json();
-    if (json.ubicaciones) {
+    const url = APPS_SCRIPT_URL + '?action=getUbicaciones';
+    const res = await fetch(url, { redirect: 'follow' });
+    const text = await res.text();
+    const json = JSON.parse(text);
+    if (json.ubicaciones && json.ubicaciones.length > 0) {
       ubicacionesData = json.ubicaciones;
       ubicacionesCatalogo = json.ubicaciones.map(u => u.nombre);
+      // Actualiza dropdowns ya abiertos
+      document.querySelectorAll('[id^="dir-cat-"]').forEach(select => {
+        const n = select.id.replace('dir-cat-', '');
+        actualizarDropdown(n);
+      });
     }
   } catch(e) {
     console.log('Error cargando ubicaciones:', e);
   }
+}
+
+function actualizarDropdown(n) {
+  const select = document.getElementById('dir-cat-' + n);
+  if (!select) return;
+  const currentVal = select.value;
+  select.innerHTML = '<option value="">Selecciona una ubicación...</option>' +
+    ubicacionesCatalogo.map(u => `<option value="${u}">${u}</option>`).join('');
+  select.value = currentVal;
 }
 
 // ── Navegación entre pasos ────────────────────────────────────────
@@ -776,6 +792,8 @@ function addParada() {
   `;
 
   container.appendChild(div);
+  // Carga ubicaciones en el nuevo dropdown
+  actualizarDropdown(n);
 }
 
 function removeParada(n) {

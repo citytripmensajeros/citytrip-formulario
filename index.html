@@ -869,6 +869,7 @@ function buildResumen() {
 
 // ── Enviar ────────────────────────────────────────────────────────
 async function enviarSolicitud() {
+  console.log('Iniciando envío...');
   const btn = document.getElementById('btn-enviar');
   const spinner = document.getElementById('spinner');
   const btnText = document.getElementById('btn-text');
@@ -925,7 +926,8 @@ async function enviarSolicitud() {
     document.getElementById('folio-display').textContent = folio;
 
   } catch (err) {
-    alert('Hubo un error al enviar. Por favor intenta de nuevo o contáctanos directamente.');
+    console.error('Error al enviar:', err);
+    alert('Error: ' + err.message);
     btn.disabled = false;
     spinner.style.display = 'none';
     btnText.textContent = 'Confirmar solicitud';
@@ -964,7 +966,11 @@ function actualizarDropdown(n) {
 async function enviarViaForm(url, data) {
   const encoded = encodeURIComponent(JSON.stringify(data));
   const finalUrl = url + '?action=guardar&payload=' + encoded;
-  await fetch(finalUrl, { method: 'GET', redirect: 'follow' });
+  console.log('Enviando a:', finalUrl.substring(0, 100) + '...');
+  const res = await fetch(finalUrl, { method: 'GET', redirect: 'follow' });
+  const text = await res.text();
+  console.log('Respuesta:', text);
+  if (!text.includes('"ok"')) throw new Error('Respuesta inesperada: ' + text);
 }
 
 function resetForm() {

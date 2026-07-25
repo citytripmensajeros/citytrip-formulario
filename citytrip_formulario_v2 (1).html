@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solicitar Servicio — CityTrip</title>
+<style>
+  :root {
+    --purple: #0F51B0;
+    --purple-light: #E8EEFA;
+    --purple-mid: #7A9DD4;
+    --dark: #2C2C2A;
+    --gray: #888780;
+    --gray-light: #F1EFE8;
+    --border: #E0DED8;
+    --white: #FFFFFF;
+    --teal: #0F6E56;
+    --teal-light: #E1F5EE;
+    --amber: #854F0B;
+    --amber-light: #FAEEDA;
+    --red: #A32D2D;
+    --red-light: #FCEBEB;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(44,44,42,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    background: #F6F4EF;
+    color: var(--dark);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* Header */
+  .header {
+    background: var(--purple);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 4px solid #FFDE59;
+  }
+  .header-logo {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .header-logo svg { width: 22px; height: 22px; }
+  .header-title { color: white; font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
+  .header-sub { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 1px; }
+
+  /* Progress */
+  .progress-bar {
+    background: var(--purple);
+    padding: 0 24px 16px;
+  }
+  .steps {
+    display: flex; gap: 0; max-width: 560px;
+  }
+  .step {
+    flex: 1; display: flex; flex-direction: column; align-items: center; position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 12px; left: 50%; width: 100%; height: 2px;
+    background: rgba(255,255,255,0.25);
+    z-index: 0;
+  }
+  .step.done:not(:last-child)::after { background: rgba(255,255,255,0.7); }
+  .step-dot {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: white;
+    position: relative; z-index: 1;
+  }
+  .step.active .step-dot { background: white; color: var(--purple); }
+  .step.done .step-dot { background: rgba(255,255,255,0.7); color: var(--purple); }
+  .step-label {
+    font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 4px; text-align: center;
+  }
+  .step.active .step-label { color: white; font-weight: 500; }
+
+  /* Main */
+  .main { max-width: 600px; margin: 0 auto; padding: 24px 16px 0; }
+
+  /* Card */
+  .card {
+    background: white; border-radius: var(--radius);
+    border: 0.5px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 15px; font-weight: 600; color: var(--dark);
+    margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+  }
+  .card-title-icon {
+    width: 28px; height: 28px; border-radius: 7px;
+    background: var(--purple-light);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .card-title-icon svg { width: 15px; height: 15px; stroke: var(--purple); }
+
+  /* Form */
+  .form-row { margin-bottom: 14px; }
+  .form-row:last-child { margin-bottom: 0; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  label {
+    display: block; font-size: 12px; font-weight: 500;
+    color: var(--gray); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  label span.req { color: var(--red); margin-left: 2px; }
+  input[type=text], input[type=email], input[type=tel], input[type=date], input[type=time], select, textarea {
+    width: 100%; padding: 10px 12px;
+    border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 14px; color: var(--dark);
+    background: white; outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+    appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(15,81,176,0.1);
+  }
+  input.error, select.error, textarea.error {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(163,45,45,0.08);
+  }
+  textarea { resize: none; height: 80px; }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888780' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+
+  /* Servicio tipo */
+  .tipo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tipo-option { position: relative; }
+  .tipo-option input[type=radio] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .tipo-label {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 14px 12px; border: 1.5px solid var(--border); border-radius: 10px;
+    cursor: pointer; transition: all 0.15s; text-align: center;
+    background: white;
+  }
+  .tipo-label:hover { border-color: var(--purple-mid); background: var(--purple-light); }
+  .tipo-option input:checked + .tipo-label {
+    border-color: var(--purple); background: var(--purple-light);
+    box-shadow: 0 0 0 3px rgba(15,81,176,0.12);
+  }
+  .tipo-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--gray-light); margin-bottom: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tipo-option input:checked + .tipo-label .tipo-icon { background: var(--purple); }
+  .tipo-icon svg { width: 20px; height: 20px; stroke: var(--gray); }
+  .tipo-option input:checked + .tipo-label .tipo-icon svg { stroke: white; }
+  .tipo-name { font-size: 14px; font-weight: 600; color: var(--dark); }
+  .tipo-desc { font-size: 11px; color: var(--gray); margin-top: 2px; }
+
+  /* Paradas */
+  .parada-card {
+    background: var(--gray-light); border-radius: 10px;
+    padding: 16px; margin-bottom: 10px;
+    border: 0.5px solid var(--border);
+    position: relative;
+  }
+  .parada-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .parada-num {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; color: var(--purple);
+  }
+  .parada-num-badge {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--purple); color: white;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .btn-remove {
+    width: 28px; height: 28px; border-radius: 7px;
+    background: none; border: 1.5px solid var(--border);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: var(--gray); transition: all 0.15s;
+  }
+  .btn-remove:hover { background: var(--red-light); border-color: var(--red); color: var(--red); }
+  .btn-remove svg { width: 14px; height: 14px; }
+
+  .tipo-parada-row { display: flex; gap: 8px; margin-bottom: 12px; }
+  .tipo-parada-opt { flex: 1; position: relative; }
+  .tipo-parada-opt input[type=radio] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .tipo-parada-lbl {
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    padding: 8px 6px; border: 1.5px solid var(--border); border-radius: 8px;
+    cursor: pointer; font-size: 12px; font-weight: 500; color: var(--gray);
+    background: white; transition: all 0.15s; text-align: center;
+  }
+  .tipo-parada-lbl:hover { border-color: var(--purple-mid); }
+  .tipo-parada-opt input:checked + .tipo-parada-lbl {
+    border-color: var(--purple); background: var(--purple); color: white;
+  }
+  .tipo-parada-lbl svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+  .dir-toggle { display: flex; gap: 6px; margin-bottom: 10px; }
+  .dir-toggle-btn {
+    flex: 1; padding: 7px; border: 1.5px solid var(--border); border-radius: 7px;
+    background: white; cursor: pointer; font-size: 11px; font-weight: 500;
+    color: var(--gray); transition: all 0.15s; font-family: inherit;
+  }
+  .dir-toggle-btn.active { border-color: var(--purple); background: var(--purple-light); color: var(--purple); }
+  .dir-toggle-btn:hover:not(.active) { border-color: var(--purple-mid); }
+
+  .dir-fields { margin-bottom: 10px; }
+  .hidden { display: none; }
+
+  .btn-add-parada {
+    width: 100%; padding: 12px;
+    border: 1.5px dashed var(--purple-mid); border-radius: 10px;
+    background: var(--purple-light); cursor: pointer;
+    font-size: 13px; font-weight: 500; color: var(--purple);
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    transition: all 0.15s; font-family: inherit;
+    margin-top: 4px;
+  }
+  .btn-add-parada:hover { background: #DDDAF8; border-color: var(--purple); }
+  .btn-add-parada svg { width: 16px; height: 16px; }
+
+  /* Buttons */
+  .btn-primary {
+    width: 100%; padding: 14px;
+    background: var(--purple); color: white;
+    border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: inherit; transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-primary:hover { background: #4A3FB5; }
+  .btn-primary:active { transform: scale(0.99); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-primary svg { width: 18px; height: 18px; }
+
+  /* Info box */
+  .info-box {
+    background: var(--teal-light); border: 0.5px solid #5DCAA5;
+    border-radius: 8px; padding: 10px 12px;
+    font-size: 12px; color: var(--teal);
+    display: flex; align-items: flex-start; gap: 8px; margin-bottom: 14px;
+  }
+  .info-box svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Error msg */
+  .err-msg {
+    font-size: 11px; color: var(--red); margin-top: 4px;
+    display: none;
+  }
+  .err-msg.show { display: block; }
+
+  /* Success screen */
+  .success-screen {
+    display: none; text-align: center; padding: 40px 24px;
+  }
+  .success-screen.show { display: block; }
+  .success-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--teal-light); margin: 0 auto 20px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .success-icon svg { width: 36px; height: 36px; stroke: var(--teal); }
+  .success-title { font-size: 22px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+  .success-sub { font-size: 14px; color: var(--gray); line-height: 1.6; }
+  .success-folio {
+    display: inline-block; margin: 16px auto;
+    background: var(--purple-light); color: var(--purple);
+    font-size: 18px; font-weight: 700; padding: 10px 24px; border-radius: 8px;
+    letter-spacing: 1px;
+  }
+  .btn-nuevo {
+    margin-top: 20px; padding: 12px 28px;
+    background: var(--purple); color: white; border: none;
+    border-radius: 10px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+
+  /* Spinner */
+  .spinner {
+    width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white; border-radius: 50%;
+    animation: spin 0.7s linear infinite; display: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 480px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .tipo-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3"/>
+      <rect x="9" y="11" width="14" height="10" rx="2"/>
+      <circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+    </svg>
+  </div>
+  <div>
+    <div class="header-title">CityTrip</div>
+    <div class="header-sub">Solicitud de servicio</div>
+  </div>
+</div>
+
+<!-- Progress -->
+<div class="progress-bar">
+  <div class="steps">
+    <div class="step active" id="step-1">
+      <div class="step-dot">1</div>
+      <div class="step-label">Tus datos</div>
+    </div>
+    <div class="step" id="step-2">
+      <div class="step-dot">2</div>
+      <div class="step-label">Servicio</div>
+    </div>
+    <div class="step" id="step-3">
+      <div class="step-dot">3</div>
+      <div class="step-label">Ruta</div>
+    </div>
+    <div class="step" id="step-4">
+      <div class="step-dot">4</div>
+      <div class="step-label">Confirmar</div>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- Success screen -->
+  <div class="card success-screen" id="success-screen">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6L9 17l-5-5"/>
+      </svg>
+    </div>
+    <div class="success-title">¡Servicio solicitado!</div>
+    <div class="success-sub">Tu solicitud fue recibida. Nuestro equipo la revisará y te confirmará en breve.</div>
+    <div class="success-folio" id="folio-display">CT-0000</div>
+    <div class="success-sub" style="font-size:13px">Guarda este número de folio para dar seguimiento a tu servicio.</div>
+    <br>
+    <button class="btn-nuevo" onclick="resetForm()">Solicitar otro servicio</button>
+  </div>
+
+  <!-- SECCIÓN 1: Tus datos -->
+  <div class="section" id="sec-1">
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        Tus datos
+      </div>
+      <div class="form-grid">
+        <div>
+          <label>Empresa <span class="req">*</span></label>
+          <input type="text" id="empresa" placeholder="Nombre de tu empresa">
+          <div class="err-msg" id="err-empresa">Este campo es requerido</div>
+        </div>
+        <div>
+          <label>Tu nombre <span class="req">*</span></label>
+          <input type="text" id="nombre" placeholder="Nombre completo">
+          <div class="err-msg" id="err-nombre">Este campo es requerido</div>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div>
+          <label>Correo electrónico <span class="req">*</span></label>
+          <input type="email" id="correo" placeholder="tu@empresa.com">
+          <div class="err-msg" id="err-correo">Ingresa un correo válido</div>
+        </div>
+        <div>
+          <label>Teléfono / WhatsApp</label>
+          <input type="tel" id="telefono" placeholder="81 1234 5678">
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Área / Departamento</label>
+        <input type="text" id="area" placeholder="Ej: Compras, Recursos Humanos, Dirección">
+      </div>
+    </div>
+    <button class="btn-primary" onclick="goStep(2)">
+      Continuar
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- SECCIÓN 2: Tipo de servicio y fecha -->
+  <div class="section hidden" id="sec-2">
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="3" width="15" height="13" rx="2"/>
+            <path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+          </svg>
+        </div>
+        Tipo de servicio
+      </div>
+      <div class="tipo-grid" style="margin-bottom:16px">
+        <div class="tipo-option">
+          <input type="radio" name="tipo-servicio" id="tipo-mensajero" value="Mensajero" checked>
+          <label class="tipo-label" for="tipo-mensajero">
+            <div class="tipo-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="tipo-name">Mensajero</div>
+            <div class="tipo-desc">Paquetes, documentos y diligencias</div>
+          </label>
+        </div>
+        <div class="tipo-option">
+          <input type="radio" name="tipo-servicio" id="tipo-flete" value="Flete">
+          <label class="tipo-label" for="tipo-flete">
+            <div class="tipo-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="1" y="3" width="15" height="13" rx="2"/>
+                <path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+              </svg>
+            </div>
+            <div class="tipo-name">Flete</div>
+            <div class="tipo-desc">Carga en camión 1T o 3.5T</div>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <label>Fecha del servicio <span class="req">*</span></label>
+          <input type="date" id="fecha-servicio">
+          <div class="err-msg" id="err-fecha">Selecciona una fecha válida (lunes a viernes)</div>
+        </div>
+        <div>
+          <label>Hora aproximada <span class="req">*</span></label>
+          <select id="hora-servicio">
+            <option value="">Selecciona hora</option>
+            <option>08:00</option><option>08:30</option>
+            <option>09:00</option><option>09:30</option>
+            <option>10:00</option><option>10:30</option>
+            <option>11:00</option><option>11:30</option>
+            <option>12:00</option><option>12:30</option>
+            <option>13:00</option><option>13:30</option>
+            <option>14:00</option><option>14:30</option>
+            <option>15:00</option><option>15:30</option>
+            <option>16:00</option><option>16:30</option>
+            <option>17:00</option><option>17:30</option>
+          </select>
+          <div class="err-msg" id="err-hora">Selecciona una hora</div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
+        </svg>
+        Servicios disponibles lunes a viernes de 8:00 am a 6:00 pm. Para servicios fuera de horario contáctanos directamente.
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn-primary" style="background:white;color:var(--dark);border:1.5px solid var(--border);flex:0 0 auto;width:auto;padding:14px 20px" onclick="goStep(1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <button class="btn-primary" onclick="goStep(3)" style="flex:1">
+        Continuar
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: Ruta / Paradas -->
+  <div class="section hidden" id="sec-3">
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        Paradas del servicio
+      </div>
+      <div class="info-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
+        </svg>
+        Agrega todas las paradas en orden. Puedes usar una dirección de tu catálogo o escribir una nueva.
+      </div>
+      <div id="paradas-container"></div>
+      <button class="btn-add-parada" onclick="addParada()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/>
+        </svg>
+        Agregar parada
+      </button>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn-primary" style="background:white;color:var(--dark);border:1.5px solid var(--border);flex:0 0 auto;width:auto;padding:14px 20px" onclick="goStep(2)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <button class="btn-primary" onclick="goStep(4)" style="flex:1">
+        Revisar solicitud
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: Confirmación -->
+  <div class="section hidden" id="sec-4">
+    <div class="card" id="resumen-card">
+      <div class="card-title">
+        <div class="card-title-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+          </svg>
+        </div>
+        Resumen de tu solicitud
+      </div>
+      <div id="resumen-content"></div>
+    </div>
+    <div class="card" style="border:none;background:transparent;box-shadow:none;padding:0">
+      <div class="form-row">
+        <label>Instrucciones generales o notas adicionales</label>
+        <textarea id="notas-generales" placeholder="Cualquier información adicional que debamos saber..."></textarea>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn-primary" style="background:white;color:var(--dark);border:1.5px solid var(--border);flex:0 0 auto;width:auto;padding:14px 20px" onclick="goStep(3)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <button class="btn-primary" id="btn-enviar" onclick="enviarSolicitud()" style="flex:1">
+        <span id="btn-text">Confirmar solicitud</span>
+        <div class="spinner" id="spinner"></div>
+        <svg id="btn-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── Estado ────────────────────────────────────────────────────────
+let paradaCount = 0;
+let currentStep = 1;
+
+// Catálogo de ubicaciones frecuentes (se llenará desde Airtable en el futuro)
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzNuq4Svsk1u3axWXi5Fn8x2kjEgPTtA_dEN2OVm0FWFD23Qms5uAAwkWrxuJYXwSxklA/exec';
+let ubicacionesCatalogo = [];
+let ubicacionesData = []; // guarda objeto completo {nombre, direccion, maps, instrucciones}
+
+async function cargarUbicaciones() {
+  try {
+    const res = await fetch(APPS_SCRIPT_URL + '?action=getUbicaciones');
+    const json = await res.json();
+    if (json.ubicaciones) {
+      ubicacionesData = json.ubicaciones;
+      ubicacionesCatalogo = json.ubicaciones.map(u => u.nombre);
+    }
+  } catch(e) {
+    console.log('Error cargando ubicaciones:', e);
+  }
+}
+
+// ── Navegación entre pasos ────────────────────────────────────────
+function goStep(n) {
+  if (n > currentStep && !validateStep(currentStep)) return;
+
+  document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+  document.getElementById('sec-' + n).classList.remove('hidden');
+
+  document.querySelectorAll('.step').forEach((s, i) => {
+    s.classList.remove('active', 'done');
+    if (i + 1 < n) s.classList.add('done');
+    if (i + 1 === n) s.classList.add('active');
+  });
+
+  if (n === 3 && paradaCount === 0) addParada();
+  if (n === 4) buildResumen();
+
+  currentStep = n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Validaciones ──────────────────────────────────────────────────
+function validateStep(step) {
+  if (step === 1) {
+    let ok = true;
+    const empresa = document.getElementById('empresa');
+    const nombre = document.getElementById('nombre');
+    const correo = document.getElementById('correo');
+
+    [empresa, nombre, correo].forEach(f => {
+      f.classList.remove('error');
+    });
+
+    if (!empresa.value.trim()) {
+      empresa.classList.add('error');
+      document.getElementById('err-empresa').classList.add('show');
+      ok = false;
+    } else {
+      document.getElementById('err-empresa').classList.remove('show');
+    }
+    if (!nombre.value.trim()) {
+      nombre.classList.add('error');
+      document.getElementById('err-nombre').classList.add('show');
+      ok = false;
+    } else {
+      document.getElementById('err-nombre').classList.remove('show');
+    }
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(correo.value.trim())) {
+      correo.classList.add('error');
+      document.getElementById('err-correo').classList.add('show');
+      ok = false;
+    } else {
+      document.getElementById('err-correo').classList.remove('show');
+    }
+    return ok;
+  }
+
+  if (step === 2) {
+    let ok = true;
+    const fecha = document.getElementById('fecha-servicio');
+    const hora = document.getElementById('hora-servicio');
+
+    if (!fecha.value) {
+      fecha.classList.add('error');
+      document.getElementById('err-fecha').classList.add('show');
+      ok = false;
+    } else {
+      const d = new Date(fecha.value + 'T12:00:00');
+      const day = d.getDay();
+      if (day === 0 || day === 6) {
+        fecha.classList.add('error');
+        document.getElementById('err-fecha').textContent = 'Solo disponible lunes a viernes';
+        document.getElementById('err-fecha').classList.add('show');
+        ok = false;
+      } else {
+        fecha.classList.remove('error');
+        document.getElementById('err-fecha').classList.remove('show');
+      }
+    }
+
+    if (!hora.value) {
+      hora.classList.add('error');
+      document.getElementById('err-hora').classList.add('show');
+      ok = false;
+    } else {
+      hora.classList.remove('error');
+      document.getElementById('err-hora').classList.remove('show');
+    }
+    return ok;
+  }
+
+  if (step === 3) {
+    if (paradaCount === 0) { addParada(); return false; }
+    let ok = true;
+    for (let i = 1; i <= paradaCount; i++) {
+      const el = document.getElementById('dir-libre-' + i);
+      const elCat = document.getElementById('dir-cat-' + i);
+      if (!el) continue;
+      const usaCat = document.querySelector(`.toggle-cat-${i}.active`);
+      const dir = usaCat ? (elCat ? elCat.value : '') : (el ? el.value.trim() : '');
+      if (!dir) {
+        if (el) el.classList.add('error');
+        ok = false;
+      } else {
+        if (el) el.classList.remove('error');
+      }
+    }
+    if (!ok) alert('Por favor completa la dirección de todas las paradas.');
+    return ok;
+  }
+
+  return true;
+}
+
+// ── Paradas ───────────────────────────────────────────────────────
+function addParada() {
+  paradaCount++;
+  const n = paradaCount;
+  const container = document.getElementById('paradas-container');
+
+  const div = document.createElement('div');
+  div.className = 'parada-card';
+  div.id = 'parada-' + n;
+
+  div.innerHTML = `
+    <div class="parada-header">
+      <div class="parada-num">
+        <div class="parada-num-badge">${n}</div>
+        Parada ${n}
+      </div>
+      ${n > 1 ? `<button class="btn-remove" onclick="removeParada(${n})" title="Eliminar parada">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>` : ''}
+    </div>
+
+    <label style="margin-bottom:6px">Tipo de parada <span class="req">*</span></label>
+    <div class="tipo-parada-row" style="margin-bottom:12px">
+      <div class="tipo-parada-opt">
+        <input type="radio" name="tipo-parada-${n}" id="tp-rec-${n}" value="Recolección" checked>
+        <label class="tipo-parada-lbl" for="tp-rec-${n}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Recolección
+        </label>
+      </div>
+      <div class="tipo-parada-opt">
+        <input type="radio" name="tipo-parada-${n}" id="tp-ent-${n}" value="Entrega">
+        <label class="tipo-parada-lbl" for="tp-ent-${n}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Entrega
+        </label>
+      </div>
+      <div class="tipo-parada-opt">
+        <input type="radio" name="tipo-parada-${n}" id="tp-amb-${n}" value="Recolección y entrega">
+        <label class="tipo-parada-lbl" for="tp-amb-${n}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+          Ambas
+        </label>
+      </div>
+    </div>
+
+    <label>Dirección <span class="req">*</span></label>
+    <div class="dir-toggle" id="dir-toggle-${n}">
+      <button class="dir-toggle-btn active toggle-cat-${n}" onclick="toggleDir(${n}, 'cat')">📋 Mis ubicaciones</button>
+      <button class="dir-toggle-btn toggle-lib-${n}" onclick="toggleDir(${n}, 'libre')">✏️ Nueva dirección</button>
+    </div>
+
+    <div class="dir-fields" id="dir-cat-field-${n}">
+      <select id="dir-cat-${n}" onchange="autoFillInstrucciones(${n})">
+        <option value="">Selecciona una ubicación...</option>
+        ${ubicacionesCatalogo.map(u => `<option value="${u}">${u}</option>`).join('')}
+      </select>
+    </div>
+
+    <div class="dir-fields hidden" id="dir-libre-field-${n}">
+      <input type="text" id="dir-libre-${n}" placeholder="Calle, número, colonia, ciudad">
+    </div>
+
+    <div class="form-row" style="margin-top:10px;margin-bottom:0">
+      <label>Instrucciones especiales para esta parada</label>
+      <textarea id="inst-${n}" placeholder="Ej: Tocar en recepción, preguntar por Miguel, horario de descarga 9am-12pm..." style="height:64px"></textarea>
+    </div>
+  `;
+
+  container.appendChild(div);
+}
+
+function removeParada(n) {
+  const el = document.getElementById('parada-' + n);
+  if (el) el.remove();
+}
+
+function toggleDir(n, tipo) {
+  const catField = document.getElementById('dir-cat-field-' + n);
+  const libField = document.getElementById('dir-libre-field-' + n);
+  const btnCat = document.querySelector('.toggle-cat-' + n);
+  const btnLib = document.querySelector('.toggle-lib-' + n);
+
+  if (tipo === 'cat') {
+    catField.classList.remove('hidden');
+    libField.classList.add('hidden');
+    btnCat.classList.add('active');
+    btnLib.classList.remove('active');
+  } else {
+    catField.classList.add('hidden');
+    libField.classList.remove('hidden');
+    btnLib.classList.add('active');
+    btnCat.classList.remove('active');
+  }
+}
+
+// ── Resumen ───────────────────────────────────────────────────────
+function buildResumen() {
+  const tipo = document.querySelector('input[name="tipo-servicio"]:checked')?.value || '';
+  const fecha = document.getElementById('fecha-servicio').value;
+  const hora = document.getElementById('hora-servicio').value;
+
+  let paradasHTML = '';
+  for (let i = 1; i <= paradaCount; i++) {
+    const el = document.getElementById('parada-' + i);
+    if (!el) continue;
+    const tipoPar = document.querySelector(`input[name="tipo-parada-${i}"]:checked`)?.value || '';
+    const usaCat = document.querySelector(`.toggle-cat-${i}`)?.classList.contains('active');
+    const dir = usaCat
+      ? (document.getElementById('dir-cat-' + i)?.value || '')
+      : (document.getElementById('dir-libre-' + i)?.value || '');
+    const inst = document.getElementById('inst-' + i)?.value || '';
+
+    paradasHTML += `
+      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border)">
+        <div style="width:24px;height:24px;border-radius:50%;background:var(--purple);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px">${i}</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600;color:var(--dark)">${dir || 'Sin dirección'}</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:2px">${tipoPar}${inst ? ' · ' + inst : ''}</div>
+        </div>
+      </div>`;
+  }
+
+  const fechaFmt = fecha ? new Date(fecha + 'T12:00:00').toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : '';
+
+  document.getElementById('resumen-content').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+      <div style="background:var(--gray-light);border-radius:8px;padding:10px 12px">
+        <div style="font-size:10px;color:var(--gray);font-weight:500;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:3px">Empresa</div>
+        <div style="font-size:13px;font-weight:600;color:var(--dark)">${document.getElementById('empresa').value}</div>
+        <div style="font-size:12px;color:var(--gray)">${document.getElementById('nombre').value}</div>
+      </div>
+      <div style="background:var(--purple-light);border-radius:8px;padding:10px 12px">
+        <div style="font-size:10px;color:var(--purple);font-weight:500;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:3px">Servicio</div>
+        <div style="font-size:13px;font-weight:600;color:var(--purple)">${tipo}</div>
+        <div style="font-size:12px;color:var(--purple)">${fechaFmt} · ${hora} hrs</div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:500;color:var(--gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">Ruta — ${paradaCount} parada${paradaCount > 1 ? 's' : ''}</div>
+    ${paradasHTML}
+  `;
+}
+
+// ── Enviar ────────────────────────────────────────────────────────
+async function enviarSolicitud() {
+  const btn = document.getElementById('btn-enviar');
+  const spinner = document.getElementById('spinner');
+  const btnText = document.getElementById('btn-text');
+  const btnIcon = document.getElementById('btn-icon');
+
+  btn.disabled = true;
+  spinner.style.display = 'block';
+  btnText.textContent = 'Enviando...';
+  btnIcon.style.display = 'none';
+
+  // Armar los datos
+  const paradas = [];
+  for (let i = 1; i <= paradaCount; i++) {
+    const el = document.getElementById('parada-' + i);
+    if (!el) continue;
+    const tipoPar = document.querySelector(`input[name="tipo-parada-${i}"]:checked`)?.value || '';
+    const usaCat = document.querySelector(`.toggle-cat-${i}`)?.classList.contains('active');
+    const dir = usaCat
+      ? (document.getElementById('dir-cat-' + i)?.value || '')
+      : (document.getElementById('dir-libre-' + i)?.value || '');
+    const inst = document.getElementById('inst-' + i)?.value || '';
+    const esFrecuente = usaCat ? 'Sí' : 'No';
+    paradas.push({ orden: i, tipo: tipoPar, direccion: dir, instrucciones: inst, esFrecuente });
+  }
+
+  const folio = 'CT-' + String(Date.now()).slice(-5);
+  const payload = {
+    folio,
+    empresa: document.getElementById('empresa').value,
+    nombre: document.getElementById('nombre').value,
+    correo: document.getElementById('correo').value,
+    telefono: document.getElementById('telefono').value,
+    area: document.getElementById('area').value,
+    tipoServicio: document.querySelector('input[name="tipo-servicio"]:checked')?.value,
+    fecha: document.getElementById('fecha-servicio').value,
+    hora: document.getElementById('hora-servicio').value,
+    paradas,
+    notasGenerales: document.getElementById('notas-generales').value,
+    timestamp: new Date().toISOString(),
+  };
+
+  // URL definida arriba como variable global
+
+  try {
+    if (false) { // URL ya configurada
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } else {
+      // Modo demo — simula envío
+      await new Promise(r => setTimeout(r, 1500));
+      console.log('Datos a enviar:', payload);
+    }
+
+    // Éxito
+    document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+    document.querySelector('.steps').parentElement.style.display = 'none';
+    const successScreen = document.getElementById('success-screen');
+    successScreen.classList.add('show');
+    successScreen.classList.remove('hidden');
+    document.getElementById('folio-display').textContent = folio;
+
+  } catch (err) {
+    alert('Hubo un error al enviar. Por favor intenta de nuevo o contáctanos directamente.');
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    btnText.textContent = 'Confirmar solicitud';
+    btnIcon.style.display = 'block';
+  }
+}
+
+// ── Reset ─────────────────────────────────────────────────────────
+function resetForm() {
+  paradaCount = 0;
+  currentStep = 1;
+  document.getElementById('empresa').value = '';
+  document.getElementById('nombre').value = '';
+  document.getElementById('correo').value = '';
+  document.getElementById('telefono').value = '';
+  document.getElementById('area').value = '';
+  document.getElementById('fecha-servicio').value = '';
+  document.getElementById('hora-servicio').value = '';
+  document.getElementById('notas-generales').value = '';
+  document.getElementById('paradas-container').innerHTML = '';
+  document.getElementById('success-screen').classList.remove('show');
+  document.querySelector('.steps').parentElement.style.display = 'block';
+  goStep(1);
+}
+
+// Fecha mínima = mañana
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+document.getElementById('fecha-servicio').min = tomorrow.toISOString().split('T')[0];
+
+// Cargar ubicaciones al iniciar
+cargarUbicaciones();
+</script>
+</body>
+</html>

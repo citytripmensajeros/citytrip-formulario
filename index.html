@@ -934,6 +934,39 @@ async function enviarSolicitud() {
 }
 
 // ── Reset ─────────────────────────────────────────────────────────
+
+// Autofill instrucciones al seleccionar ubicación del catálogo
+function autoFillInstrucciones(n) {
+  const select = document.getElementById('dir-cat-' + n);
+  const inst = document.getElementById('inst-' + n);
+  if (!select || !inst) return;
+  const found = ubicacionesData.find(u => u.nombre === select.value);
+  if (found && found.instrucciones) {
+    inst.value = found.instrucciones;
+    inst.style.background = '#FFFBF0';
+  } else {
+    inst.value = '';
+    inst.style.background = '';
+  }
+}
+
+// Actualiza dropdown con ubicaciones cargadas
+function actualizarDropdown(n) {
+  const select = document.getElementById('dir-cat-' + n);
+  if (!select) return;
+  const currentVal = select.value;
+  select.innerHTML = '<option value="">Selecciona una ubicación...</option>' +
+    ubicacionesCatalogo.map(u => `<option value="${u}">${u}</option>`).join('');
+  select.value = currentVal;
+}
+
+// Envío via GET para evitar CORS
+async function enviarViaForm(url, data) {
+  const encoded = encodeURIComponent(JSON.stringify(data));
+  const finalUrl = url + '?action=guardar&payload=' + encoded;
+  await fetch(finalUrl, { method: 'GET', redirect: 'follow' });
+}
+
 function resetForm() {
   paradaCount = 0;
   currentStep = 1;

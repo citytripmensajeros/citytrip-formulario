@@ -913,7 +913,7 @@ async function enviarSolicitud() {
   // URL definida arriba como variable global
 
   try {
-    // Enviar via formulario oculto para evitar CORS
+    // Enviar datos al Apps Script
     await enviarViaForm(APPS_SCRIPT_URL, payload);
 
     // Éxito

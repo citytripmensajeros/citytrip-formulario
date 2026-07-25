@@ -913,18 +913,8 @@ async function enviarSolicitud() {
   // URL definida arriba como variable global
 
   try {
-    if (false) { // URL ya configurada
-      await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-    } else {
-      // Modo demo — simula envío
-      await new Promise(r => setTimeout(r, 1500));
-      console.log('Datos a enviar:', payload);
-    }
+    // Enviar via formulario oculto para evitar CORS
+    await enviarViaForm(APPS_SCRIPT_URL, payload);
 
     // Éxito
     document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));

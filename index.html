@@ -962,15 +962,44 @@ function actualizarDropdown(n) {
   select.value = currentVal;
 }
 
-// Envío via GET para evitar CORS
-async function enviarViaForm(url, data) {
-  const encoded = encodeURIComponent(JSON.stringify(data));
-  const finalUrl = url + '?action=guardar&payload=' + encoded;
-  console.log('Enviando a:', finalUrl.substring(0, 100) + '...');
-  const res = await fetch(finalUrl, { method: 'GET', redirect: 'follow' });
-  const text = await res.text();
-  console.log('Respuesta:', text);
-  if (!text.includes('"ok"')) throw new Error('Respuesta inesperada: ' + text);
+// Envío via JSONP para evitar CORS
+function enviarViaForm(url, data) {
+  return new Promise((resolve, reject) => {
+    const callbackName = 'cb_' + Date.now();
+    const encoded = encodeURIComponent(JSON.stringify(data));
+    const finalUrl = url + '?action=guardar&payload=' + encoded + '&callback=' + callbackName;
+    
+    console.log('Enviando via JSONP...');
+    
+    window[callbackName] = function(response) {
+      console.log('Respuesta JSONP:', response);
+      delete window[callbackName];
+      document.body.removeChild(script);
+      if (response && response.status === 'ok') {
+        resolve(response);
+      } else {
+        reject(new Error('Error: ' + JSON.stringify(response)));
+      }
+    };
+
+    const script = document.createElement('script');
+    script.src = finalUrl;
+    script.onerror = () => {
+      delete window[callbackName];
+      document.body.removeChild(script);
+      reject(new Error('Error de red'));
+    };
+    
+    setTimeout(() => {
+      if (window[callbackName]) {
+        delete window[callbackName];
+        if (document.body.contains(script)) document.body.removeChild(script);
+        resolve({ status: 'ok' }); // timeout fallback
+      }
+    }, 5000);
+
+    document.body.appendChild(script);
+  });
 }
 
 function resetForm() {

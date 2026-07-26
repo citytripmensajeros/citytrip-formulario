@@ -965,7 +965,7 @@ function actualizarDropdown(n) {
 // Envío via Google Forms (sin CORS)
 function enviarViaForm(url, data) {
   return new Promise((resolve) => {
-    const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSd9cj6xpfLc0HjFLN4DF9zYiDYQ_m_6w36UK12Gz92A-DZsSA/formResponse';
+    const FORM_URL = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSd9cj6xpfLc0HjFLN4DF9zYiDYQ_m_6w36UK12Gz92A-DZsSA/formResponse';
 
     // Armar detalle de paradas
     const paradasDetalle = data.paradas.map(p =>

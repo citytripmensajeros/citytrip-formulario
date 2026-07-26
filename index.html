@@ -908,7 +908,7 @@ async function enviarSolicitud() {
     hora: document.getElementById('hora-servicio').value,
     paradas,
     notasGenerales: document.getElementById('notas-generales').value,
-    timestamp: new Date().toISOString(),
+    timestamp: new Date().toLocaleString('es-MX', {timeZone:'America/Monterrey'}),
   };
 
   // URL definida arriba como variable global
@@ -1029,9 +1029,18 @@ function enviarViaForm(url, data) {
 
     form.submit();
 
-    // También notificar al Chat via Apps Script (sin esperar respuesta)
-    const encoded = encodeURIComponent(JSON.stringify(data));
-    fetch(url + '?action=notificar&payload=' + encoded, { redirect: 'follow' }).catch(() => {});
+    // Notificar al Chat via imagen invisible (evita CORS)
+    try {
+      const encoded = encodeURIComponent(JSON.stringify(data));
+      const notifyUrl = url + '?action=notificar&payload=' + encoded;
+      console.log('Notificando al Chat...');
+      const img = new Image();
+      img.src = notifyUrl;
+      img.onload = () => console.log('Chat notificado ✅');
+      img.onerror = () => console.log('Notificación enviada (respuesta ignorada)');
+    } catch(err) {
+      console.log('Error en notificación:', err);
+    }
   });
 }
 

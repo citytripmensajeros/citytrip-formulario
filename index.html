@@ -372,7 +372,9 @@
       <div class="form-grid">
         <div>
           <label>Empresa <span class="req">*</span></label>
-          <input type="text" id="empresa" placeholder="Nombre de tu empresa">
+          <select id="empresa" onchange="cargarUbicaciones(this.value)">
+            <option value="">Cargando empresas...</option>
+          </select>
           <div class="err-msg" id="err-empresa">Este campo es requerido</div>
         </div>
         <div>
@@ -579,16 +581,35 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzNuq4Svsk1u3ax
 let ubicacionesCatalogo = [];
 let ubicacionesData = []; // guarda objeto completo {nombre, direccion, maps, instrucciones}
 
-async function cargarUbicaciones() {
+async function cargarEmpresas() {
   try {
-    const url = APPS_SCRIPT_URL + '?action=getUbicaciones';
+    const url = APPS_SCRIPT_URL + '?action=getEmpresas';
     const res = await fetch(url, { redirect: 'follow' });
     const text = await res.text();
     const json = JSON.parse(text);
-    if (json.ubicaciones && json.ubicaciones.length > 0) {
+    if (json.empresas && json.empresas.length > 0) {
+      const select = document.getElementById('empresa');
+      const currentVal = select.value;
+      // Reemplaza el input de texto con select
+      select.innerHTML = '<option value="">Selecciona tu empresa...</option>' +
+        json.empresas.map(e => `<option value="${e}">${e}</option>`).join('');
+      if (currentVal) select.value = currentVal;
+    }
+  } catch(e) {
+    console.log('Error cargando empresas:', e);
+  }
+}
+
+async function cargarUbicaciones(empresa) {
+  try {
+    const empresaParam = empresa ? '&empresa=' + encodeURIComponent(empresa) : '';
+    const url = APPS_SCRIPT_URL + '?action=getUbicaciones' + empresaParam;
+    const res = await fetch(url, { redirect: 'follow' });
+    const text = await res.text();
+    const json = JSON.parse(text);
+    if (json.ubicaciones) {
       ubicacionesData = json.ubicaciones;
       ubicacionesCatalogo = json.ubicaciones.map(u => u.nombre);
-      // Actualiza dropdowns ya abiertos
       document.querySelectorAll('[id^="dir-cat-"]').forEach(select => {
         const n = select.id.replace('dir-cat-', '');
         actualizarDropdown(n);
@@ -789,6 +810,11 @@ function addParada() {
       <label>Instrucciones especiales para esta parada</label>
       <textarea id="inst-${n}" placeholder="Ej: Tocar en recepción, preguntar por Miguel, horario de descarga 9am-12pm..." style="height:64px"></textarea>
     </div>
+    <div id="nueva-ubic-section-${n}" class="hidden" style="margin-top:10px;background:var(--amber-light);border-radius:8px;padding:10px;border:0.5px solid #E8C97A">
+      <div style="font-size:11px;font-weight:500;color:var(--amber);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em">💾 Guardar esta dirección</div>
+      <label style="margin-bottom:4px;display:block;font-size:12px;color:var(--dark)">Nombre para recordarla</label>
+      <input type="text" id="nueva-ubic-nombre-${n}" placeholder="Ej: Bodega norte, Oficina principal..." style="margin-bottom:0">
+    </div>
   `;
 
   container.appendChild(div);
@@ -806,17 +832,20 @@ function toggleDir(n, tipo) {
   const libField = document.getElementById('dir-libre-field-' + n);
   const btnCat = document.querySelector('.toggle-cat-' + n);
   const btnLib = document.querySelector('.toggle-lib-' + n);
+  const nuevaSection = document.getElementById('nueva-ubic-section-' + n);
 
   if (tipo === 'cat') {
     catField.classList.remove('hidden');
     libField.classList.add('hidden');
     btnCat.classList.add('active');
     btnLib.classList.remove('active');
+    if (nuevaSection) nuevaSection.classList.add('hidden');
   } else {
     catField.classList.add('hidden');
     libField.classList.remove('hidden');
     btnLib.classList.add('active');
     btnCat.classList.remove('active');
+    if (nuevaSection) nuevaSection.classList.remove('hidden');
   }
 }
 
@@ -1066,8 +1095,9 @@ const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
 document.getElementById('fecha-servicio').min = tomorrow.toISOString().split('T')[0];
 
-// Cargar ubicaciones al iniciar
-cargarUbicaciones();
+// Cargar empresas y ubicaciones al iniciar
+cargarEmpresas();
+cargarUbicaciones('');
 </script>
 </body>
 </html>

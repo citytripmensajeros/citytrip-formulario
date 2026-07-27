@@ -991,87 +991,18 @@ function actualizarDropdown(n) {
   select.value = currentVal;
 }
 
-// Envío via Google Forms (sin CORS)
-function enviarViaForm(url, data) {
-  return new Promise((resolve) => {
-    const FORM_URL = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSd9cj6xpfLc0HjFLN4DF9zYiDYQ_m_6w36UK12Gz92A-DZsSA/formResponse';
-
-    // Armar detalle de paradas
-    const paradasDetalle = data.paradas.map(p =>
-      `P${p.orden}: [${p.tipo}] ${p.direccion}${p.instrucciones ? ' — ' + p.instrucciones : ''}`
-    ).join(' | ');
-
-    // Construir form data
-    const formData = new FormData();
-    formData.append('entry.1919904327', data.folio);
-    formData.append('entry.883698441',  data.empresa);
-    formData.append('entry.1849775164', data.nombre);
-    formData.append('entry.385393799',  data.correo);
-    formData.append('entry.685974322',  data.telefono || '');
-    formData.append('entry.836302084',  data.area || '');
-    formData.append('entry.2063470831', data.tipoServicio);
-    formData.append('entry.1829807545', data.fecha);
-    formData.append('entry.1772637651', data.hora);
-    formData.append('entry.1232622778', paradasDetalle);
-    formData.append('entry.489493430',  data.notasGenerales || '');
-    formData.append('entry.932951474',  data.timestamp);
-
-    console.log('Enviando via Google Forms...');
-
-    // Enviar via iframe oculto — Google Forms no tiene CORS
-    const iframe = document.createElement('iframe');
-    iframe.name = 'gf_' + Date.now();
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
-
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = FORM_URL;
-    form.target = iframe.name;
-    form.style.display = 'none';
-
-    // Agregar campos
-    for (const [key, value] of formData.entries()) {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = key;
-      input.value = value;
-      form.appendChild(input);
-    }
-
-    document.body.appendChild(form);
-
-    iframe.onload = () => {
-      console.log('Google Forms respondió ✅');
-      setTimeout(() => {
-        document.body.removeChild(form);
-        document.body.removeChild(iframe);
-      }, 1000);
-      resolve({ status: 'ok' });
-    };
-
-    // Timeout fallback
-    setTimeout(() => {
-      console.log('Timeout — asumiendo éxito');
-      resolve({ status: 'ok' });
-    }, 4000);
-
-    form.submit();
-
-    // Notificar al Chat via imagen invisible (evita CORS)
-    try {
-      const encoded = encodeURIComponent(JSON.stringify(data));
-      const notifyUrl = url + '?action=notificar&payload=' + encoded;
-      console.log('Notificando al Chat...');
-      const img = new Image();
-      img.src = notifyUrl;
-      img.onload = () => console.log('Chat notificado ✅');
-      img.onerror = () => console.log('Notificación enviada (respuesta ignorada)');
-    } catch(err) {
-      console.log('Error en notificación:', err);
-    }
-  });
+// Envío via Apps Script GET — guarda en Sheet y notifica al Chat
+async function enviarViaForm(url, data) {
+  const encoded = encodeURIComponent(JSON.stringify(data));
+  const finalUrl = url + '?action=guardar&payload=' + encoded;
+  console.log('Enviando a Apps Script...');
+  const res = await fetch(finalUrl, { redirect: 'follow' });
+  const text = await res.text();
+  console.log('Respuesta:', text);
+  const json = JSON.parse(text);
+  if (json.status !== 'ok') throw new Error('Error: ' + (json.msg || 'desconocido'));
 }
+
 
 function resetForm() {
   paradaCount = 0;

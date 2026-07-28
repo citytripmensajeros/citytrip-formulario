@@ -576,10 +576,9 @@
 let paradaCount = 0;
 let currentStep = 1;
 
-// Catálogo de ubicaciones frecuentes (se llenará desde Airtable en el futuro)
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTGWSx6jUxKIgnhfYE8hTA53jRc9hiFMC5xTkTr01go1N117si8EI7_JPGYyPYpW3kAg/exec';
 let ubicacionesCatalogo = [];
-let ubicacionesData = []; // guarda objeto completo {nombre, direccion, maps, instrucciones}
+let ubicacionesData = [];
 
 async function cargarEmpresas() {
   try {
@@ -590,7 +589,6 @@ async function cargarEmpresas() {
     if (json.empresas && json.empresas.length > 0) {
       const select = document.getElementById('empresa');
       const currentVal = select.value;
-      // Reemplaza el input de texto con select
       select.innerHTML = '<option value="">Selecciona tu empresa...</option>' +
         json.empresas.map(e => `<option value="${e}">${e}</option>`).join('');
       if (currentVal) select.value = currentVal;
@@ -818,7 +816,6 @@ function addParada() {
   `;
 
   container.appendChild(div);
-  // Carga ubicaciones en el nuevo dropdown
   actualizarDropdown(n);
 }
 
@@ -909,7 +906,6 @@ async function enviarSolicitud() {
   btnText.textContent = 'Enviando...';
   btnIcon.style.display = 'none';
 
-  // Armar los datos
   const paradas = [];
   for (let i = 1; i <= paradaCount; i++) {
     const el = document.getElementById('parada-' + i);
@@ -940,13 +936,9 @@ async function enviarSolicitud() {
     timestamp: new Date().toLocaleString('es-MX', {timeZone:'America/Monterrey'}),
   };
 
-  // URL definida arriba como variable global
-
   try {
-    // Enviar datos al Apps Script
     await enviarViaForm(APPS_SCRIPT_URL, payload);
 
-    // Éxito
     document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
     document.querySelector('.steps').parentElement.style.display = 'none';
     const successScreen = document.getElementById('success-screen');
@@ -964,9 +956,6 @@ async function enviarSolicitud() {
   }
 }
 
-// ── Reset ─────────────────────────────────────────────────────────
-
-// Autofill instrucciones al seleccionar ubicación del catálogo
 function autoFillInstrucciones(n) {
   const select = document.getElementById('dir-cat-' + n);
   const inst = document.getElementById('inst-' + n);
@@ -981,17 +970,6 @@ function autoFillInstrucciones(n) {
   }
 }
 
-// Actualiza dropdown con ubicaciones cargadas
-function actualizarDropdown(n) {
-  const select = document.getElementById('dir-cat-' + n);
-  if (!select) return;
-  const currentVal = select.value;
-  select.innerHTML = '<option value="">Selecciona una ubicación...</option>' +
-    ubicacionesCatalogo.map(u => `<option value="${u}">${u}</option>`).join('');
-  select.value = currentVal;
-}
-
-// Envío via Apps Script GET — guarda en Sheet y notifica al Chat
 async function enviarViaForm(url, data) {
   const encoded = encodeURIComponent(JSON.stringify(data));
   const finalUrl = url + '?action=guardar&payload=' + encoded;
@@ -1002,7 +980,6 @@ async function enviarViaForm(url, data) {
   const json = JSON.parse(text);
   if (json.status !== 'ok') throw new Error('Error: ' + (json.msg || 'desconocido'));
 }
-
 
 function resetForm() {
   paradaCount = 0;
@@ -1021,12 +998,10 @@ function resetForm() {
   goStep(1);
 }
 
-// Fecha mínima = mañana
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-document.getElementById('fecha-servicio').min = tomorrow.toISOString().split('T')[0];
+// Fecha mínima = hoy (permite agendar el mismo día)
+const today = new Date();
+document.getElementById('fecha-servicio').min = today.toISOString().split('T')[0];
 
-// Cargar empresas y ubicaciones al iniciar
 cargarEmpresas();
 cargarUbicaciones('');
 </script>

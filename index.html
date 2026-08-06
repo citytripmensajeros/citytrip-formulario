@@ -31,8 +31,6 @@
     min-height: 100vh;
     padding: 0 0 60px;
   }
-
-  /* Header */
   .header {
     background: var(--purple);
     padding: 16px 24px;
@@ -50,24 +48,13 @@
   .header-logo svg { width: 22px; height: 22px; }
   .header-title { color: white; font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
   .header-sub { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 1px; }
-
-  /* Progress */
-  .progress-bar {
-    background: var(--purple);
-    padding: 0 24px 16px;
-  }
-  .steps {
-    display: flex; gap: 0; max-width: 560px;
-  }
-  .step {
-    flex: 1; display: flex; flex-direction: column; align-items: center; position: relative;
-  }
+  .progress-bar { background: var(--purple); padding: 0 24px 16px; }
+  .steps { display: flex; gap: 0; max-width: 560px; }
+  .step { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; }
   .step:not(:last-child)::after {
-    content: '';
-    position: absolute;
+    content: ''; position: absolute;
     top: 12px; left: 50%; width: 100%; height: 2px;
-    background: rgba(255,255,255,0.25);
-    z-index: 0;
+    background: rgba(255,255,255,0.25); z-index: 0;
   }
   .step.done:not(:last-child)::after { background: rgba(255,255,255,0.7); }
   .step-dot {
@@ -79,21 +66,14 @@
   }
   .step.active .step-dot { background: white; color: var(--purple); }
   .step.done .step-dot { background: rgba(255,255,255,0.7); color: var(--purple); }
-  .step-label {
-    font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 4px; text-align: center;
-  }
+  .step-label { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 4px; text-align: center; }
   .step.active .step-label { color: white; font-weight: 500; }
-
-  /* Main */
   .main { max-width: 600px; margin: 0 auto; padding: 24px 16px 0; }
-
-  /* Card */
   .card {
     background: white; border-radius: var(--radius);
     border: 0.5px solid var(--border);
     box-shadow: var(--shadow);
-    padding: 24px;
-    margin-bottom: 16px;
+    padding: 24px; margin-bottom: 16px;
   }
   .card-title {
     font-size: 15px; font-weight: 600; color: var(--dark);
@@ -102,12 +82,9 @@
   .card-title-icon {
     width: 28px; height: 28px; border-radius: 7px;
     background: var(--purple-light);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .card-title-icon svg { width: 15px; height: 15px; stroke: var(--purple); }
-
-  /* Form */
   .form-row { margin-bottom: 14px; }
   .form-row:last-child { margin-bottom: 0; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
@@ -121,30 +98,23 @@
     border: 1.5px solid var(--border); border-radius: 8px;
     font-size: 14px; color: var(--dark);
     background: white; outline: none;
-    transition: border-color 0.15s;
-    font-family: inherit;
-    appearance: none;
+    transition: border-color 0.15s; font-family: inherit; appearance: none;
   }
   input:focus, select:focus, textarea:focus {
-    border-color: var(--purple);
-    box-shadow: 0 0 0 3px rgba(15,81,176,0.1);
+    border-color: var(--purple); box-shadow: 0 0 0 3px rgba(15,81,176,0.1);
   }
   input.error, select.error, textarea.error {
-    border-color: var(--red);
-    box-shadow: 0 0 0 3px rgba(163,45,45,0.08);
+    border-color: var(--red); box-shadow: 0 0 0 3px rgba(163,45,45,0.08);
   }
   textarea { resize: none; height: 80px; }
   select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888780' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
-
-  /* Servicio tipo */
   .tipo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .tipo-option { position: relative; }
   .tipo-option input[type=radio] { position: absolute; opacity: 0; width: 0; height: 0; }
   .tipo-label {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     padding: 14px 12px; border: 1.5px solid var(--border); border-radius: 10px;
-    cursor: pointer; transition: all 0.15s; text-align: center;
-    background: white;
+    cursor: pointer; transition: all 0.15s; text-align: center; background: white;
   }
   .tipo-label:hover { border-color: var(--purple-mid); background: var(--purple-light); }
   .tipo-option input:checked + .tipo-label {
@@ -161,22 +131,13 @@
   .tipo-option input:checked + .tipo-label .tipo-icon svg { stroke: white; }
   .tipo-name { font-size: 14px; font-weight: 600; color: var(--dark); }
   .tipo-desc { font-size: 11px; color: var(--gray); margin-top: 2px; }
-
-  /* Paradas */
   .parada-card {
     background: var(--gray-light); border-radius: 10px;
     padding: 16px; margin-bottom: 10px;
-    border: 0.5px solid var(--border);
-    position: relative;
+    border: 0.5px solid var(--border); position: relative;
   }
-  .parada-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 12px;
-  }
-  .parada-num {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 13px; font-weight: 600; color: var(--purple);
-  }
+  .parada-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .parada-num { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--purple); }
   .parada-num-badge {
     width: 22px; height: 22px; border-radius: 50%;
     background: var(--purple); color: white;
@@ -191,7 +152,6 @@
   }
   .btn-remove:hover { background: var(--red-light); border-color: var(--red); color: var(--red); }
   .btn-remove svg { width: 14px; height: 14px; }
-
   .tipo-parada-row { display: flex; gap: 8px; margin-bottom: 12px; }
   .tipo-parada-opt { flex: 1; position: relative; }
   .tipo-parada-opt input[type=radio] { position: absolute; opacity: 0; width: 0; height: 0; }
@@ -206,7 +166,6 @@
     border-color: var(--purple); background: var(--purple); color: white;
   }
   .tipo-parada-lbl svg { width: 13px; height: 13px; flex-shrink: 0; }
-
   .dir-toggle { display: flex; gap: 6px; margin-bottom: 10px; }
   .dir-toggle-btn {
     flex: 1; padding: 7px; border: 1.5px solid var(--border); border-radius: 7px;
@@ -215,23 +174,18 @@
   }
   .dir-toggle-btn.active { border-color: var(--purple); background: var(--purple-light); color: var(--purple); }
   .dir-toggle-btn:hover:not(.active) { border-color: var(--purple-mid); }
-
   .dir-fields { margin-bottom: 10px; }
   .hidden { display: none; }
-
   .btn-add-parada {
     width: 100%; padding: 12px;
     border: 1.5px dashed var(--purple-mid); border-radius: 10px;
     background: var(--purple-light); cursor: pointer;
     font-size: 13px; font-weight: 500; color: var(--purple);
     display: flex; align-items: center; justify-content: center; gap: 6px;
-    transition: all 0.15s; font-family: inherit;
-    margin-top: 4px;
+    transition: all 0.15s; font-family: inherit; margin-top: 4px;
   }
   .btn-add-parada:hover { background: #DDDAF8; border-color: var(--purple); }
   .btn-add-parada svg { width: 16px; height: 16px; }
-
-  /* Buttons */
   .btn-primary {
     width: 100%; padding: 14px;
     background: var(--purple); color: white;
@@ -244,8 +198,6 @@
   .btn-primary:active { transform: scale(0.99); }
   .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
   .btn-primary svg { width: 18px; height: 18px; }
-
-  /* Info box */
   .info-box {
     background: var(--teal-light); border: 0.5px solid #5DCAA5;
     border-radius: 8px; padding: 10px 12px;
@@ -253,18 +205,9 @@
     display: flex; align-items: flex-start; gap: 8px; margin-bottom: 14px;
   }
   .info-box svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
-
-  /* Error msg */
-  .err-msg {
-    font-size: 11px; color: var(--red); margin-top: 4px;
-    display: none;
-  }
+  .err-msg { font-size: 11px; color: var(--red); margin-top: 4px; display: none; }
   .err-msg.show { display: block; }
-
-  /* Success screen */
-  .success-screen {
-    display: none; text-align: center; padding: 40px 24px;
-  }
+  .success-screen { display: none; text-align: center; padding: 40px 24px; }
   .success-screen.show { display: block; }
   .success-icon {
     width: 72px; height: 72px; border-radius: 50%;
@@ -277,8 +220,7 @@
   .success-folio {
     display: inline-block; margin: 16px auto;
     background: var(--purple-light); color: var(--purple);
-    font-size: 18px; font-weight: 700; padding: 10px 24px; border-radius: 8px;
-    letter-spacing: 1px;
+    font-size: 18px; font-weight: 700; padding: 10px 24px; border-radius: 8px; letter-spacing: 1px;
   }
   .btn-nuevo {
     margin-top: 20px; padding: 12px 28px;
@@ -286,15 +228,12 @@
     border-radius: 10px; font-size: 14px; font-weight: 600;
     cursor: pointer; font-family: inherit;
   }
-
-  /* Spinner */
   .spinner {
     width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4);
     border-top-color: white; border-radius: 50%;
     animation: spin 0.7s linear infinite; display: none;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-
   @media (max-width: 480px) {
     .form-grid { grid-template-columns: 1fr; }
     .tipo-grid { grid-template-columns: 1fr 1fr; }
@@ -303,7 +242,6 @@
 </head>
 <body>
 
-<!-- Header -->
 <div class="header">
   <div class="header-logo">
     <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -318,37 +256,20 @@
   </div>
 </div>
 
-<!-- Progress -->
 <div class="progress-bar">
   <div class="steps">
-    <div class="step active" id="step-1">
-      <div class="step-dot">1</div>
-      <div class="step-label">Tus datos</div>
-    </div>
-    <div class="step" id="step-2">
-      <div class="step-dot">2</div>
-      <div class="step-label">Servicio</div>
-    </div>
-    <div class="step" id="step-3">
-      <div class="step-dot">3</div>
-      <div class="step-label">Ruta</div>
-    </div>
-    <div class="step" id="step-4">
-      <div class="step-dot">4</div>
-      <div class="step-label">Confirmar</div>
-    </div>
+    <div class="step active" id="step-1"><div class="step-dot">1</div><div class="step-label">Tus datos</div></div>
+    <div class="step" id="step-2"><div class="step-dot">2</div><div class="step-label">Servicio</div></div>
+    <div class="step" id="step-3"><div class="step-dot">3</div><div class="step-label">Ruta</div></div>
+    <div class="step" id="step-4"><div class="step-dot">4</div><div class="step-label">Confirmar</div></div>
   </div>
 </div>
 
-<!-- Main -->
 <div class="main">
 
-  <!-- Success screen -->
   <div class="card success-screen" id="success-screen">
     <div class="success-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 6L9 17l-5-5"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
     </div>
     <div class="success-title">¡Servicio solicitado!</div>
     <div class="success-sub">Tu solicitud fue recibida. Nuestro equipo la revisará y te confirmará en breve.</div>
@@ -358,7 +279,7 @@
     <button class="btn-nuevo" onclick="resetForm()">Solicitar otro servicio</button>
   </div>
 
-  <!-- SECCIÓN 1: Tus datos -->
+  <!-- SECCIÓN 1 -->
   <div class="section" id="sec-1">
     <div class="card">
       <div class="card-title">
@@ -401,13 +322,11 @@
     </div>
     <button class="btn-primary" onclick="goStep(2)">
       Continuar
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 12h14M12 5l7 7-7 7"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
   </div>
 
-  <!-- SECCIÓN 2: Tipo de servicio y fecha -->
+  <!-- SECCIÓN 2 -->
   <div class="section hidden" id="sec-2">
     <div class="card">
       <div class="card-title">
@@ -446,7 +365,6 @@
           </label>
         </div>
       </div>
-
       <div class="form-grid">
         <div>
           <label>Fecha del servicio <span class="req">*</span></label>
@@ -471,7 +389,6 @@
           <div class="err-msg" id="err-hora">Selecciona una hora</div>
         </div>
       </div>
-
       <div class="info-box">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
@@ -481,20 +398,16 @@
     </div>
     <div style="display:flex;gap:10px">
       <button class="btn-primary" style="background:white;color:var(--dark);border:1.5px solid var(--border);flex:0 0 auto;width:auto;padding:14px 20px" onclick="goStep(1)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
-          <path d="M19 12H5M12 19l-7-7 7-7"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       </button>
       <button class="btn-primary" onclick="goStep(3)" style="flex:1">
         Continuar
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
     </div>
   </div>
 
-  <!-- SECCIÓN 3: Ruta / Paradas -->
+  <!-- SECCIÓN 3 -->
   <div class="section hidden" id="sec-3">
     <div class="card">
       <div class="card-title">
@@ -521,20 +434,16 @@
     </div>
     <div style="display:flex;gap:10px">
       <button class="btn-primary" style="background:white;color:var(--dark);border:1.5px solid var(--border);flex:0 0 auto;width:auto;padding:14px 20px" onclick="goStep(2)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
-          <path d="M19 12H5M12 19l-7-7 7-7"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       </button>
       <button class="btn-primary" onclick="goStep(4)" style="flex:1">
         Revisar solicitud
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
     </div>
   </div>
 
-  <!-- SECCIÓN 4: Confirmación -->
+  <!-- SECCIÓN 4 -->
   <div class="section hidden" id="sec-4">
     <div class="card" id="resumen-card">
       <div class="card-title">
@@ -555,9 +464,7 @@
     </div>
     <div style="display:flex;gap:10px">
       <button class="btn-primary" style="background:white;color:var(--dark);border:1.5px solid var(--border);flex:0 0 auto;width:auto;padding:14px 20px" onclick="goStep(3)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
-          <path d="M19 12H5M12 19l-7-7 7-7"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       </button>
       <button class="btn-primary" id="btn-enviar" onclick="enviarSolicitud()" style="flex:1">
         <span id="btn-text">Confirmar solicitud</span>
@@ -572,152 +479,99 @@
 </div>
 
 <script>
-// ── Estado ────────────────────────────────────────────────────────
 let paradaCount = 0;
 let currentStep = 1;
 
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTGWSx6jUxKIgnhfYE8hTA53jRc9hiFMC5xTkTr01go1N117si8EI7_JPGYyPYpW3kAg/exec';
+const FORM_SECRET = 'CTsec_2026_xK9mP3qR';
+
 let ubicacionesCatalogo = [];
 let ubicacionesData = [];
 
 async function cargarEmpresas() {
   try {
-    const url = APPS_SCRIPT_URL + '?action=getEmpresas';
-    const res = await fetch(url, { redirect: 'follow' });
-    const text = await res.text();
-    const json = JSON.parse(text);
+    const res = await fetch(APPS_SCRIPT_URL + '?action=getEmpresas', { redirect: 'follow' });
+    const json = JSON.parse(await res.text());
     if (json.empresas && json.empresas.length > 0) {
       const select = document.getElementById('empresa');
-      const currentVal = select.value;
       select.innerHTML = '<option value="">Selecciona tu empresa...</option>' +
         json.empresas.map(e => `<option value="${e}">${e}</option>`).join('');
-      if (currentVal) select.value = currentVal;
     }
-  } catch(e) {
-    console.log('Error cargando empresas:', e);
-  }
+  } catch(e) { console.log('Error cargando empresas:', e); }
 }
 
 async function cargarUbicaciones(empresa) {
   try {
-    const empresaParam = empresa ? '&empresa=' + encodeURIComponent(empresa) : '';
-    const url = APPS_SCRIPT_URL + '?action=getUbicaciones' + empresaParam;
-    const res = await fetch(url, { redirect: 'follow' });
-    const text = await res.text();
-    const json = JSON.parse(text);
+    const param = empresa ? '&empresa=' + encodeURIComponent(empresa) : '';
+    const res = await fetch(APPS_SCRIPT_URL + '?action=getUbicaciones' + param, { redirect: 'follow' });
+    const json = JSON.parse(await res.text());
     if (json.ubicaciones) {
       ubicacionesData = json.ubicaciones;
       ubicacionesCatalogo = json.ubicaciones.map(u => u.nombre);
-      document.querySelectorAll('[id^="dir-cat-"]').forEach(select => {
-        const n = select.id.replace('dir-cat-', '');
-        actualizarDropdown(n);
+      document.querySelectorAll('[id^="dir-cat-"]').forEach(sel => {
+        actualizarDropdown(sel.id.replace('dir-cat-', ''));
       });
     }
-  } catch(e) {
-    console.log('Error cargando ubicaciones:', e);
-  }
+  } catch(e) { console.log('Error cargando ubicaciones:', e); }
 }
 
 function actualizarDropdown(n) {
   const select = document.getElementById('dir-cat-' + n);
   if (!select) return;
-  const currentVal = select.value;
+  const v = select.value;
   select.innerHTML = '<option value="">Selecciona una ubicación...</option>' +
     ubicacionesCatalogo.map(u => `<option value="${u}">${u}</option>`).join('');
-  select.value = currentVal;
+  select.value = v;
 }
 
-// ── Navegación entre pasos ────────────────────────────────────────
 function goStep(n) {
   if (n > currentStep && !validateStep(currentStep)) return;
-
   document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
   document.getElementById('sec-' + n).classList.remove('hidden');
-
   document.querySelectorAll('.step').forEach((s, i) => {
     s.classList.remove('active', 'done');
     if (i + 1 < n) s.classList.add('done');
     if (i + 1 === n) s.classList.add('active');
   });
-
   if (n === 3 && paradaCount === 0) addParada();
   if (n === 4) buildResumen();
-
   currentStep = n;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── Validaciones ──────────────────────────────────────────────────
 function validateStep(step) {
   if (step === 1) {
     let ok = true;
     const empresa = document.getElementById('empresa');
     const nombre = document.getElementById('nombre');
     const correo = document.getElementById('correo');
-
-    [empresa, nombre, correo].forEach(f => {
-      f.classList.remove('error');
-    });
-
-    if (!empresa.value.trim()) {
-      empresa.classList.add('error');
-      document.getElementById('err-empresa').classList.add('show');
-      ok = false;
-    } else {
-      document.getElementById('err-empresa').classList.remove('show');
-    }
-    if (!nombre.value.trim()) {
-      nombre.classList.add('error');
-      document.getElementById('err-nombre').classList.add('show');
-      ok = false;
-    } else {
-      document.getElementById('err-nombre').classList.remove('show');
-    }
+    [empresa, nombre, correo].forEach(f => f.classList.remove('error'));
+    if (!empresa.value.trim()) { empresa.classList.add('error'); document.getElementById('err-empresa').classList.add('show'); ok = false; }
+    else { document.getElementById('err-empresa').classList.remove('show'); }
+    if (!nombre.value.trim()) { nombre.classList.add('error'); document.getElementById('err-nombre').classList.add('show'); ok = false; }
+    else { document.getElementById('err-nombre').classList.remove('show'); }
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRe.test(correo.value.trim())) {
-      correo.classList.add('error');
-      document.getElementById('err-correo').classList.add('show');
-      ok = false;
-    } else {
-      document.getElementById('err-correo').classList.remove('show');
-    }
+    if (!emailRe.test(correo.value.trim())) { correo.classList.add('error'); document.getElementById('err-correo').classList.add('show'); ok = false; }
+    else { document.getElementById('err-correo').classList.remove('show'); }
     return ok;
   }
-
   if (step === 2) {
     let ok = true;
     const fecha = document.getElementById('fecha-servicio');
     const hora = document.getElementById('hora-servicio');
-
-    if (!fecha.value) {
-      fecha.classList.add('error');
-      document.getElementById('err-fecha').classList.add('show');
-      ok = false;
-    } else {
-      const d = new Date(fecha.value + 'T12:00:00');
-      const day = d.getDay();
+    if (!fecha.value) { fecha.classList.add('error'); document.getElementById('err-fecha').classList.add('show'); ok = false; }
+    else {
+      const day = new Date(fecha.value + 'T12:00:00').getDay();
       if (day === 0 || day === 6) {
         fecha.classList.add('error');
         document.getElementById('err-fecha').textContent = 'Solo disponible lunes a viernes';
-        document.getElementById('err-fecha').classList.add('show');
-        ok = false;
-      } else {
-        fecha.classList.remove('error');
-        document.getElementById('err-fecha').classList.remove('show');
-      }
+        document.getElementById('err-fecha').classList.add('show'); ok = false;
+      } else { fecha.classList.remove('error'); document.getElementById('err-fecha').classList.remove('show'); }
     }
-
-    if (!hora.value) {
-      hora.classList.add('error');
-      document.getElementById('err-hora').classList.add('show');
-      ok = false;
-    } else {
-      hora.classList.remove('error');
-      document.getElementById('err-hora').classList.remove('show');
-    }
+    if (!hora.value) { hora.classList.add('error'); document.getElementById('err-hora').classList.add('show'); ok = false; }
+    else { hora.classList.remove('error'); document.getElementById('err-hora').classList.remove('show'); }
     return ok;
   }
-
   if (step === 3) {
     if (paradaCount === 0) { addParada(); return false; }
     let ok = true;
@@ -727,41 +581,31 @@ function validateStep(step) {
       if (!el) continue;
       const usaCat = document.querySelector(`.toggle-cat-${i}.active`);
       const dir = usaCat ? (elCat ? elCat.value : '') : (el ? el.value.trim() : '');
-      if (!dir) {
-        if (el) el.classList.add('error');
-        ok = false;
-      } else {
-        if (el) el.classList.remove('error');
-      }
+      if (!dir) { if (el) el.classList.add('error'); ok = false; }
+      else { if (el) el.classList.remove('error'); }
     }
     if (!ok) alert('Por favor completa la dirección de todas las paradas.');
     return ok;
   }
-
   return true;
 }
 
-// ── Paradas ───────────────────────────────────────────────────────
 function addParada() {
   paradaCount++;
   const n = paradaCount;
-  const container = document.getElementById('paradas-container');
-
   const div = document.createElement('div');
   div.className = 'parada-card';
   div.id = 'parada-' + n;
-
   div.innerHTML = `
     <div class="parada-header">
       <div class="parada-num">
         <div class="parada-num-badge">${n}</div>
         Parada ${n}
       </div>
-      ${n > 1 ? `<button class="btn-remove" onclick="removeParada(${n})" title="Eliminar parada">
+      ${n > 1 ? `<button class="btn-remove" onclick="removeParada(${n})">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>` : ''}
     </div>
-
     <label style="margin-bottom:6px">Tipo de parada <span class="req">*</span></label>
     <div class="tipo-parada-row" style="margin-bottom:12px">
       <div class="tipo-parada-opt">
@@ -786,27 +630,23 @@ function addParada() {
         </label>
       </div>
     </div>
-
     <label>Dirección <span class="req">*</span></label>
-    <div class="dir-toggle" id="dir-toggle-${n}">
+    <div class="dir-toggle">
       <button class="dir-toggle-btn active toggle-cat-${n}" onclick="toggleDir(${n}, 'cat')">📋 Mis ubicaciones</button>
       <button class="dir-toggle-btn toggle-lib-${n}" onclick="toggleDir(${n}, 'libre')">✏️ Nueva dirección</button>
     </div>
-
     <div class="dir-fields" id="dir-cat-field-${n}">
       <select id="dir-cat-${n}" onchange="autoFillInstrucciones(${n})">
         <option value="">Selecciona una ubicación...</option>
         ${ubicacionesCatalogo.map(u => `<option value="${u}">${u}</option>`).join('')}
       </select>
     </div>
-
     <div class="dir-fields hidden" id="dir-libre-field-${n}">
       <input type="text" id="dir-libre-${n}" placeholder="Calle, número, colonia, ciudad">
     </div>
-
     <div class="form-row" style="margin-top:10px;margin-bottom:0">
       <label>Instrucciones especiales para esta parada</label>
-      <textarea id="inst-${n}" placeholder="Ej: Tocar en recepción, preguntar por Miguel, horario de descarga 9am-12pm..." style="height:64px"></textarea>
+      <textarea id="inst-${n}" placeholder="Ej: Tocar en recepción, preguntar por Miguel..." style="height:64px"></textarea>
     </div>
     <div id="nueva-ubic-section-${n}" class="hidden" style="margin-top:10px;background:var(--amber-light);border-radius:8px;padding:10px;border:0.5px solid #E8C97A">
       <div style="font-size:11px;font-weight:500;color:var(--amber);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em">💾 Guardar esta dirección</div>
@@ -814,8 +654,7 @@ function addParada() {
       <input type="text" id="nueva-ubic-nombre-${n}" placeholder="Ej: Bodega norte, Oficina principal..." style="margin-bottom:0">
     </div>
   `;
-
-  container.appendChild(div);
+  document.getElementById('paradas-container').appendChild(div);
   actualizarDropdown(n);
 }
 
@@ -830,39 +669,29 @@ function toggleDir(n, tipo) {
   const btnCat = document.querySelector('.toggle-cat-' + n);
   const btnLib = document.querySelector('.toggle-lib-' + n);
   const nuevaSection = document.getElementById('nueva-ubic-section-' + n);
-
   if (tipo === 'cat') {
-    catField.classList.remove('hidden');
-    libField.classList.add('hidden');
-    btnCat.classList.add('active');
-    btnLib.classList.remove('active');
+    catField.classList.remove('hidden'); libField.classList.add('hidden');
+    btnCat.classList.add('active'); btnLib.classList.remove('active');
     if (nuevaSection) nuevaSection.classList.add('hidden');
   } else {
-    catField.classList.add('hidden');
-    libField.classList.remove('hidden');
-    btnLib.classList.add('active');
-    btnCat.classList.remove('active');
+    catField.classList.add('hidden'); libField.classList.remove('hidden');
+    btnLib.classList.add('active'); btnCat.classList.remove('active');
     if (nuevaSection) nuevaSection.classList.remove('hidden');
   }
 }
 
-// ── Resumen ───────────────────────────────────────────────────────
 function buildResumen() {
   const tipo = document.querySelector('input[name="tipo-servicio"]:checked')?.value || '';
   const fecha = document.getElementById('fecha-servicio').value;
   const hora = document.getElementById('hora-servicio').value;
-
   let paradasHTML = '';
   for (let i = 1; i <= paradaCount; i++) {
     const el = document.getElementById('parada-' + i);
     if (!el) continue;
     const tipoPar = document.querySelector(`input[name="tipo-parada-${i}"]:checked`)?.value || '';
     const usaCat = document.querySelector(`.toggle-cat-${i}`)?.classList.contains('active');
-    const dir = usaCat
-      ? (document.getElementById('dir-cat-' + i)?.value || '')
-      : (document.getElementById('dir-libre-' + i)?.value || '');
+    const dir = usaCat ? (document.getElementById('dir-cat-' + i)?.value || '') : (document.getElementById('dir-libre-' + i)?.value || '');
     const inst = document.getElementById('inst-' + i)?.value || '';
-
     paradasHTML += `
       <div style="display:flex;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border)">
         <div style="width:24px;height:24px;border-radius:50%;background:var(--purple);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px">${i}</div>
@@ -872,9 +701,7 @@ function buildResumen() {
         </div>
       </div>`;
   }
-
   const fechaFmt = fecha ? new Date(fecha + 'T12:00:00').toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : '';
-
   document.getElementById('resumen-content').innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
       <div style="background:var(--gray-light);border-radius:8px;padding:10px 12px">
@@ -893,14 +720,11 @@ function buildResumen() {
   `;
 }
 
-// ── Enviar ────────────────────────────────────────────────────────
 async function enviarSolicitud() {
-  console.log('Iniciando envío...');
   const btn = document.getElementById('btn-enviar');
   const spinner = document.getElementById('spinner');
   const btnText = document.getElementById('btn-text');
   const btnIcon = document.getElementById('btn-icon');
-
   btn.disabled = true;
   spinner.style.display = 'block';
   btnText.textContent = 'Enviando...';
@@ -912,16 +736,14 @@ async function enviarSolicitud() {
     if (!el) continue;
     const tipoPar = document.querySelector(`input[name="tipo-parada-${i}"]:checked`)?.value || '';
     const usaCat = document.querySelector(`.toggle-cat-${i}`)?.classList.contains('active');
-    const dir = usaCat
-      ? (document.getElementById('dir-cat-' + i)?.value || '')
-      : (document.getElementById('dir-libre-' + i)?.value || '');
+    const dir = usaCat ? (document.getElementById('dir-cat-' + i)?.value || '') : (document.getElementById('dir-libre-' + i)?.value || '');
     const inst = document.getElementById('inst-' + i)?.value || '';
-    const esFrecuente = usaCat ? 'Sí' : 'No';
-    paradas.push({ orden: i, tipo: tipoPar, direccion: dir, instrucciones: inst, esFrecuente });
+    paradas.push({ orden: i, tipo: tipoPar, direccion: dir, instrucciones: inst, esFrecuente: usaCat ? 'Sí' : 'No' });
   }
 
   const folio = 'CT-' + String(Date.now()).slice(-5);
   const payload = {
+    secret: FORM_SECRET,
     folio,
     empresa: document.getElementById('empresa').value,
     nombre: document.getElementById('nombre').value,
@@ -937,18 +759,19 @@ async function enviarSolicitud() {
   };
 
   try {
-    await enviarViaForm(APPS_SCRIPT_URL, payload);
+    const encoded = encodeURIComponent(JSON.stringify(payload));
+    const res = await fetch(APPS_SCRIPT_URL + '?action=guardar&payload=' + encoded, { redirect: 'follow' });
+    const json = JSON.parse(await res.text());
+    if (json.status !== 'ok') throw new Error(json.msg || 'Error desconocido');
 
     document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
     document.querySelector('.steps').parentElement.style.display = 'none';
-    const successScreen = document.getElementById('success-screen');
-    successScreen.classList.add('show');
-    successScreen.classList.remove('hidden');
+    const ss = document.getElementById('success-screen');
+    ss.classList.add('show'); ss.classList.remove('hidden');
     document.getElementById('folio-display').textContent = folio;
-
-  } catch (err) {
-    console.error('Error al enviar:', err);
-    alert('Error: ' + err.message);
+  } catch(err) {
+    console.error(err);
+    alert('Error al enviar: ' + err.message);
     btn.disabled = false;
     spinner.style.display = 'none';
     btnText.textContent = 'Confirmar solicitud';
@@ -961,46 +784,23 @@ function autoFillInstrucciones(n) {
   const inst = document.getElementById('inst-' + n);
   if (!select || !inst) return;
   const found = ubicacionesData.find(u => u.nombre === select.value);
-  if (found && found.instrucciones) {
-    inst.value = found.instrucciones;
-    inst.style.background = '#FFFBF0';
-  } else {
-    inst.value = '';
-    inst.style.background = '';
-  }
-}
-
-async function enviarViaForm(url, data) {
-  const encoded = encodeURIComponent(JSON.stringify(data));
-  const finalUrl = url + '?action=guardar&payload=' + encoded;
-  console.log('Enviando a Apps Script...');
-  const res = await fetch(finalUrl, { redirect: 'follow' });
-  const text = await res.text();
-  console.log('Respuesta:', text);
-  const json = JSON.parse(text);
-  if (json.status !== 'ok') throw new Error('Error: ' + (json.msg || 'desconocido'));
+  inst.value = found && found.instrucciones ? found.instrucciones : '';
+  inst.style.background = found && found.instrucciones ? '#FFFBF0' : '';
 }
 
 function resetForm() {
-  paradaCount = 0;
-  currentStep = 1;
-  document.getElementById('empresa').value = '';
-  document.getElementById('nombre').value = '';
-  document.getElementById('correo').value = '';
-  document.getElementById('telefono').value = '';
-  document.getElementById('area').value = '';
-  document.getElementById('fecha-servicio').value = '';
-  document.getElementById('hora-servicio').value = '';
-  document.getElementById('notas-generales').value = '';
+  paradaCount = 0; currentStep = 1;
+  ['empresa','nombre','correo','telefono','area','fecha-servicio','hora-servicio','notas-generales'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
   document.getElementById('paradas-container').innerHTML = '';
   document.getElementById('success-screen').classList.remove('show');
   document.querySelector('.steps').parentElement.style.display = 'block';
   goStep(1);
 }
 
-// Fecha mínima = hoy (permite agendar el mismo día)
-const today = new Date();
-document.getElementById('fecha-servicio').min = today.toISOString().split('T')[0];
+// Fecha mínima = hoy
+document.getElementById('fecha-servicio').min = new Date().toISOString().split('T')[0];
 
 cargarEmpresas();
 cargarUbicaciones('');
